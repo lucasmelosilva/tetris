@@ -27,7 +27,9 @@ class Tetris:
             self._board.on_key_left()
           if event.key == pygame.K_RIGHT:
             self._board.on_key_right()
-            
+          self._screen.fill('black')
+          self._board.update(False)
+          self._board.draw()
     
       if counter % self.speed == 0:
         self._board.update()
