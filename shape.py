@@ -3,7 +3,9 @@ class Shape:
   def __init__(self, rotations):
     self._rotations = rotations
     self._rotations_count = len(rotations)
-
+  
+  def get_matrix_with_offset(self, rotation, offset):
+    return offset + self._rotations[rotation]
 
 def generate_shapes():
     # shape i
@@ -48,7 +50,7 @@ def generate_shapes():
     return list([shape_i, shape_l, shape_j, shape_s, shape_z, shape_t, shape_o])
 
 
-def generate_colours():
+def generate_colors():
     RED = [255, 0, 0]
     GREEN = [0, 255, 0]
     YELLOW = [204, 204, 0]
