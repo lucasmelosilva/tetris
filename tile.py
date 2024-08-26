@@ -23,7 +23,6 @@ class Tile:
     return new_matrix
   
   def move(self, dx, dy):
-    print(f'self._position: {self._position} dx: {dx}, dy: {dy}')
     next_pos = self._position + np.array([dx, dy])
     
     tile_matrix = self._shape.get_matrix_with_offset(self._rotation, next_pos)
