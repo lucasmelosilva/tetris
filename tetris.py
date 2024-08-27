@@ -43,5 +43,3 @@ class Tetris:
       text_surface = self._score_font.render('Score: ' + str(self._board.score), False, (255, 255, 255))
       self._screen.blit(text_surface, (500, 150))
     pygame.quit()
-
-Tetris().run()

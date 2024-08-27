@@ -43,6 +43,8 @@ class Board:
       is_locked = self._current_tile.move(0, 1)
       if is_locked:
         self._ground.merge(self._current_tile)
+        self.score += self._ground.expire_rows()
+        
         self.create_tile()
     
   def create_tile(self):
