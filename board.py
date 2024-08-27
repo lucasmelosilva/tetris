@@ -2,6 +2,8 @@ import numpy as np
 import pygame
 import shape
 from tile import Tile
+from collision_detector import CollisionDetector
+from ground import Ground
 
 import random
 
@@ -15,7 +17,9 @@ class Board:
     self.score = 0
     self._colors = shape.generate_colors()
     self._shapes = shape.generate_shapes()
-
+    self._ground = Ground(width, height)
+    self._collision_detector = CollisionDetector(self,self._ground)
+    
   def draw(self):
     block_size = 35
     x_offset = 100
@@ -30,12 +34,19 @@ class Board:
       if self._current_tile is None:
           self.create_tile()
       if on_timer:
-          self._current_tile.move(0, 1)
+          self.drop_tile()
       self._matrix[:, :] = 0
       self.draw_tile(self._current_tile)
-      
+      self.draw_ground(self._ground)
+  
+  def drop_tile(self):
+      is_locked = self._current_tile.move(0, 1)
+      if is_locked:
+        self._ground.merge(self._current_tile)
+        self.create_tile()
+    
   def create_tile(self):
-      self._current_tile = Tile(self.get_shape(), self.get_color(), random.randint(0,6))
+      self._current_tile = Tile(self.get_shape(),self._collision_detector, self.get_color(), random.randint(0,6))
       
   def get_shape(self):
       return self._shapes[random.randint(0, len(self._shapes) - 1)]
@@ -48,7 +59,10 @@ class Board:
     for pos in matrix:
         if 0 <= pos[0] < self._matrix.shape[0] and 0 <= pos[1] < self._matrix.shape[1]:
             if pos[1] < self._height:
-                self._matrix[pos[0], pos[1]] = tile.get_color()              
+                self._matrix[pos[0], pos[1]] = tile.get_color()
+
+  def draw_ground(self, ground):
+    self._matrix = np.maximum(self._matrix, ground.get_matrix())
 
   def on_key_up(self):
       self._current_tile.rotate(1)
