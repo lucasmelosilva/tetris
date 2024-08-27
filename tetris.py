@@ -9,12 +9,16 @@ class Tetris:
     self.speed = 40
     self._clock = pygame.time.Clock()
     pygame.font.init()
+    pygame.mixer.init()
+    self._music = pygame.mixer.Sound('soundtrack.mp3')
     self._score_font = pygame.font.SysFont('Arial', 30)
     self.run()
     
   def run(self):
     counter = 0
     while self._running:
+      if counter == 0:
+        self._music.play(-1)
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
           self._running = False
